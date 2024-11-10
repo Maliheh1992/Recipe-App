@@ -18,6 +18,7 @@ function RecipeCategoryDetail() {
   const params = new URLSearchParams(location.search);
   const dietLabels = JSON.parse(params.get("dietLabels") || "[]");
   const healthLabels = JSON.parse(params.get("healthLabels") || "[]");
+  const ingredients =JSON.parse(params.get("ingredients") || "[]");
 
   // Access addFavorite and favorites from FavoritesContext
   const { addFavorite, removeFavorite, favorites } = useFavorites();
@@ -50,9 +51,8 @@ function RecipeCategoryDetail() {
   }, [id]);
 
   useEffect(() => {
-    console.log("Diet Labels:", dietLabels);
-    console.log("Health Labels:", healthLabels);
-  }, [dietLabels, healthLabels]);
+  
+  }, [dietLabels,healthLabels,ingredients]);
 
   if (loading) {
     return (
@@ -99,7 +99,7 @@ function RecipeCategoryDetail() {
             <div className="grid grid-cols-3">
               <div className="flex flex-col items-center py-4 gap-1 sm:py-5 lg:py-6 lg:gap-2">
                 <span className="text-4xl font-semibold">
-                  {recipe?.ingredients.length}
+                  {ingredients}
                 </span>
 
                 <span className="capitalize opacity-80">ingredients</span>
@@ -140,7 +140,9 @@ function RecipeCategoryDetail() {
 
               {dietLabels.length > 0 ? (
                 dietLabels.map((dietLabel, index) => (
-                  <Button key={index}>{dietLabel}</Button>
+                  <Button variant="outline" key={index}>
+                    {dietLabel}
+                  </Button>
                 ))
               ) : (
                 <p>No diet labels available</p>

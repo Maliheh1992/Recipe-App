@@ -1,29 +1,43 @@
 import axios from "axios";
 
-export async function fetchRecipes(filter) {
-  const { query, limit } = filter;
-  const url =`https://api.edamam.com/search?q=${query}&app_id=${process.env.REACT_APP_EDAMAM_APP_ID}&app_key=${process.env.REACT_APP_EDAMAM_API_KEY}&from=0&to=${limit}&`;
+
+export async function fetchRecipes({ query, limit, nextUrl }) {
+  // اگر لینک next موجود است، از آن استفاده کن؛ در غیر این صورت لینک اصلی را بساز
+  const url = nextUrl || `https://api.edamam.com/api/recipes/v2?type=public&q=${query}&app_id=${process.env.REACT_APP_EDAMAM_APP_ID}&app_key=${process.env.REACT_APP_EDAMAM_API_KEY}&beta=true&from=0&to=${limit}`;
 
   try {
     const response = await axios.get(url);
     const data = response.data;
-    console.log(data);
-    return data?.hits;
+    console.log("Fetched data:", data);
+
+    // بازگشت داده‌ها و لینک صفحه بعدی
+    return {
+      recipes: data.hits,
+      nextUrl: data._links?.next?.href || null, // لینک صفحه بعدی، اگر موجود بود
+      count: data.count,
+    };
   } catch (error) {
     console.error("Error fetching data:", error);
-    return [];
+    return { recipes: [], nextUrl: null, count: 0 };
   }
 }
 
 
-
-
-
 export async function fetchRecipe(id) {
-  const url = `https://api.edamam.com/search?r=http://www.edamam.com/ontologies/edamam.owl%23${id}&app_id=${process.env.REACT_APP_EDAMAM_APP_ID}&app_key=${process.env.REACT_APP_EDAMAM_API_KEY}`;
+  const url = `https://api.edamam.com/api/recipes/v2/${id}?type=public&app_id=${process.env.REACT_APP_EDAMAM_APP_ID}&app_key=${process.env.REACT_APP_EDAMAM_API_KEY}`;
 
-  const response = await fetch(url);
-  const data = await response.json();
-  console.log(data);
-  return data[0];
+  try {
+    console.log("Requesting URL:", url);  // اضافه کردن لاگ برای URL درخواست
+    const response = await axios.get(url);
+    const data = response.data;
+
+    console.log("Response Data:", data);  
+    console.log("Recipe Data:", data.recipe); 
+
+    return data.recipe; 
+  } catch (error) {
+    console.error("Error fetching recipe details:", error); 
+    return null; 
+  }
 }
+

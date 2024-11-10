@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "../Components/Header";
 import Recipes from "../Components/Recipes";
+import PaginationPage from "../Components/PaginationPage";
 
 function Home() {
   return (

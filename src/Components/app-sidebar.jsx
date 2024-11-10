@@ -1,13 +1,4 @@
-import {
-  Bot,
-  CookingPot,
-  Globe,
-  HeartPulse,
-  Timer,
-  Utensils,
-  Vegan,
-  Weight,
-} from "lucide-react";
+
 
 import { NavMain } from "./nav-main";
 
@@ -15,13 +6,15 @@ import { TeamSwitcher } from "./team-switcher";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarHeader,
-  useSidebar,
+
 } from "./ui/sidebar";
+import { NavUser } from "./NavUser";
 
 // This is sample data.
 
-export function AppSidebar({props,data,onSubCategoryClick}) {
+export function AppSidebar({props,data,onSubCategoryClick,selectedFilters,applyFilter,deleteFilter}) {
 
   return (
     <Sidebar variant="inset" collapsible="icon" {...props}>
@@ -29,8 +22,11 @@ export function AppSidebar({props,data,onSubCategoryClick}) {
         <TeamSwitcher />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} onSubCategoryClick={onSubCategoryClick} />
+        <NavMain items={data.navMain} onSubCategoryClick={onSubCategoryClick} selectedFilters={selectedFilters}   />
       </SidebarContent>
+      <SidebarFooter>
+        <NavUser applyFilter={applyFilter} deleteFilter={deleteFilter} selectedFilters={selectedFilters}/>
+      </SidebarFooter>
     </Sidebar>
   );
 }

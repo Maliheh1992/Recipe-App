@@ -6,15 +6,14 @@ import {
   CollapsibleTrigger,
 } from "./ui/collapsible";
 import {
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
-  useSidebar,
+  
 } from "./ui/sidebar";
 
 export function NavMain({ items, onSubCategoryClick }) {
@@ -62,6 +61,7 @@ export function NavMain({ items, onSubCategoryClick }) {
           </Collapsible>
         ))}
       </SidebarMenu>
+    
     </SidebarGroup>
   );
 }

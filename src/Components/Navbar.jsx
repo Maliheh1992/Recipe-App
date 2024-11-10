@@ -41,7 +41,7 @@ function Navbar() {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/recipes">Explore</Link>
+            <Link to="/recipes">Recopies</Link>
           </li>
           <li>
             <Link to="/favorites">Favorites</Link>
@@ -69,10 +69,10 @@ function Navbar() {
         <Link className="font-medium " to="/">
           Home
         </Link>
-        <Link className="font-medium" to="/#recipes">
-          Recipe
+        <Link className="font-medium"  to="/recipes">
+          Recipes
         </Link>
-        <Link className="font-medium" to="/">
+        <Link className="font-medium" to="/favorites">
           Favorites
         </Link>
         <div className="flex items-center gap-4 font-medium">

@@ -7,7 +7,7 @@ import { FaHeart } from "react-icons/fa";
 import { useFavorites } from "../Context/FavoritesProvider"; //
 
 function RecipeCard({ recipe }) {
-  console.log("Recipe Card Data:", recipe); 
+  // console.log("Recipe Card Data:", recipe); 
   const {
     image,
     label,

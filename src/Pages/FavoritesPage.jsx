@@ -9,18 +9,18 @@ function FavoritesPage() {
 
 
   return (
-    <div className=" w-full ">
+    <div className=" w-full">
       <Navbar />
       <h2 className="text-2xl m-4 flex items-center justify-center font-bold">
         Favorites List
       </h2>
-      <div className="mx-auto px-4 md:px-20">
+      <div className="mx-auto  px-4 md:px-20">
         {favorites.length > 0 ? (
-          <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+          <div className="mt-10  grid place-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {favorites.map((favorite) => (
               <div
                 key={favorite.uri}
-                className=" flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-border bg-background shadow-md min-w-56"
+                className=" flex w-full max-w-xs flex-col  overflow-hidden rounded-lg border border-border bg-background shadow-md min-w-56"
               >
                 <div className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl">
                   <img

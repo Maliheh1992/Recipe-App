@@ -10,19 +10,23 @@ import { useFavorites } from "../Context/FavoritesProvider";
 import { GoClock } from "react-icons/go";
 import { HeartIcon } from "lucide-react";
 import { FaHeart } from "react-icons/fa";
+import PaginationPage from "./PaginationPage";
 /// Import useFavorites
 
-function CategoryPage({ filteredRecipes }) {
-
+function CategoryPage({
+  filteredRecipes,
+  currentPage,
+  totalPages,
+  onPageChange,
+}) {
   const { addFavorite, removeFavorite, favorites } = useFavorites();
 
   return (
-    <div className="w-full">
+    <div className="w-full mx-auto ">
       {filteredRecipes?.length > 0 ? (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid place-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {filteredRecipes.map((item, index) => {
-                console.log("Recipe Data:", item.recipe); // بررسی داده‌ها
               const isFavorite = favorites.some(
                 (fav) => fav.uri === item.recipe.uri
               );
@@ -46,13 +50,13 @@ function CategoryPage({ filteredRecipes }) {
                       src={item.recipe.image}
                       alt={item.recipe.label}
                     />
-                    <span className="absolute top-0 left-0 m-2 rounded-lg bg-primary p-2 text-center text-sm font-medium text-foreground">
+                    <span className="absolute top-0 left-0 m-2 rounded-lg bg-primary p-2 text-center text-sm font-medium text-primary-foreground capitalize">
                       {item.recipe.cuisineType}
                     </span>
                     <Button
                       onClick={handleFavoriteClick}
                       className={`absolute top-0 right-0 m-2 p-2 text-center text-sm font-medium ${
-                        isFavorite ? "text-red-500" : "text-foreground-400"
+                        isFavorite ? "text-red-500" : "text-foreground"
                       }`}
                     >
                       {isFavorite ? <FaHeart /> : <HeartIcon />}
@@ -60,13 +64,21 @@ function CategoryPage({ filteredRecipes }) {
                   </div>
 
                   <div className="mt-4 px-5 pb-5 flex flex-col">
-                  <Link
-  to={`/recipes/category/${item.recipe.uri?.split("#")[1]}?dietLabels=${encodeURIComponent(JSON.stringify(item.recipe.dietLabels || []))}&healthLabels=${encodeURIComponent(JSON.stringify(item.recipe.healthLabels || []))}`}
->
-  <h5 className="text-xl tracking-tight text-foreground line-clamp-1">
-    {item.recipe.label}
-  </h5>
-</Link>
+                    <Link
+                      to={`/recipes/category/${
+                        item.recipe.uri?.split("#")[1]
+                      }?dietLabels=${encodeURIComponent(
+                        JSON.stringify(item.recipe.dietLabels || [])
+                      )}&healthLabels=${encodeURIComponent(
+                        JSON.stringify(item.recipe.healthLabels || [])
+                      )}&ingredients=${encodeURIComponent(
+                        JSON.stringify(item.recipe.ingredients.length || [])
+                      )}`}
+                    >
+                      <h5 className="text-xl tracking-tight text-foreground line-clamp-1">
+                        {item.recipe.label}
+                      </h5>
+                    </Link>
                     <div className="mt-2 mb-5">
                       <div className="flex items-center justify-between">
                         <div>
@@ -79,7 +91,7 @@ function CategoryPage({ filteredRecipes }) {
                         </div>
                         <div>
                           <span className="text-xl font-bold mr-2">
-                            {item.recipe.calories.toFixed(2)}
+                            {Math.floor(item.recipe.calories)}
                           </span>
                           <span className="flex items-center justify-center text-sm text-foreground">
                             Calories <GoClock />
@@ -102,9 +114,11 @@ function CategoryPage({ filteredRecipes }) {
           </div>
 
           <div className="flex items-center justify-center py-10 mt-5">
-            <Button size="lg" className="font-bold text-2xl">
-              Show More
-            </Button>
+            <PaginationPage
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={onPageChange}
+            />
           </div>
         </>
       ) : (

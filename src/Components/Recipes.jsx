@@ -6,15 +6,19 @@ import RecipeCard from "./RecipeCard";
 import { fetchRecipes } from "../utils";
 import { Button } from "./ui/button";
 import { useSearchParams } from "react-router-dom";
-import { useFavorites } from "../Context/FavoritesProvider";  // Import useFavorites
+import { useFavorites } from "../Context/FavoritesProvider"; // Import useFavorites
+import PaginationPage from "./PaginationPage";
 
 function Recipes() {
   const [recipes, setRecipes] = useState([]);
   const [query, setQuery] = useState("");
-  const [limit, setLimit] = useState(50);
+  const [limit, setLimit] = useState(20);
   const [loading, setLoading] = useState(false);
   const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [nextUrl, setNextUrl] = useState(null); // ذخیره لینک صفحه بعدی
+  const [totalResults, setTotalResults] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const { favorites } = useFavorites(); // Access favorites from context
 
@@ -27,17 +31,21 @@ function Recipes() {
     fetchRecipe();
   };
 
-  const showMore = () => {
-    setLimit((prev) => prev + 10);
-    fetchRecipe();
+  const handleNextPage = () => {
+    if (nextUrl) {
+      setCurrentPage(currentPage + 1);
+      fetchRecipe();
+    }
   };
 
   const fetchRecipe = async () => {
     try {
       setLoading(true);
-      const data = await fetchRecipes({ query, limit });
-      setRecipes(data);
-      setFilteredRecipes(data);
+      const data = await fetchRecipes({ query, limit, nextUrl });
+      setRecipes(data.recipes);
+      setFilteredRecipes(data.recipes);
+      setNextUrl(data.nextUrl); // به‌روزرسانی لینک صفحه بعدی
+      setTotalResults(data.count || 0);
     } catch (error) {
       console.log(error);
     } finally {
@@ -57,7 +65,9 @@ function Recipes() {
   }, [searchParams]);
 
   if (loading) {
-    return <Loading />;
+    <div className="w-full h-[100vh] flex items-center justify-center">
+    <Loading />
+  </div>
   }
 
   const applyFilter = (type) => {
@@ -99,16 +109,19 @@ function Recipes() {
 
       {filteredRecipes?.length > 0 ? (
         <>
-          <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+          <div className="mt-10 grid place-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {filteredRecipes.map((item, index) => (
               <RecipeCard recipe={item.recipe} key={index} />
             ))}
           </div>
 
           <div className="flex items-center justify-center py-10 mt-5 ">
-            <Button size="lg" className="font-bold text-2xl" onClick={showMore}>
-              Show More
-            </Button>
+        
+            <PaginationPage
+              currentPage={currentPage}
+              totalPages={Math.ceil(totalResults / limit)}
+              onPageChange={handleNextPage}
+            />
           </div>
         </>
       ) : (

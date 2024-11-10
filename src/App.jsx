@@ -7,8 +7,9 @@ import { ThemeProvider } from "./Context/ThemeProvider";
 
 import { FavoritesProvider } from "./Context/FavoritesProvider";
 import FavoritesPage from "./Pages/FavoritesPage";
-import RecipesCategory from "./Components/RecipesCategory";
+
 import RecipeCategoryDetail from "./Components/RecipeCategoryDetail";
+import RecipesCategory from "./Pages/RecipesCategory";
 
 function App() {
   return (
