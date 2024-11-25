@@ -14,7 +14,8 @@ import { NavUser } from "./NavUser";
 
 // This is sample data.
 
-export function AppSidebar({props,data,onSubCategoryClick,selectedFilters,applyFilter,deleteFilter}) {
+export function AppSidebar({props,data,onSubCategoryClick,selectedFilters,applyFilter,deleteFilter,selectedFiltersCategory}) {
+
 
   return (
     <Sidebar variant="inset" collapsible="icon" {...props}>
@@ -22,11 +23,11 @@ export function AppSidebar({props,data,onSubCategoryClick,selectedFilters,applyF
         <TeamSwitcher />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} onSubCategoryClick={onSubCategoryClick} selectedFilters={selectedFilters}   />
+        <NavMain items={data.navMain} onSubCategoryClick={onSubCategoryClick} selectedFilters={selectedFilters} selectedFiltersCategory={selectedFiltersCategory}   />
       </SidebarContent>
-      <SidebarFooter>
+      {/* <SidebarFooter>
         <NavUser applyFilter={applyFilter} deleteFilter={deleteFilter} selectedFilters={selectedFilters}/>
-      </SidebarFooter>
+      </SidebarFooter> */}
     </Sidebar>
   );
 }

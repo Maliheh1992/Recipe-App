@@ -10,6 +10,7 @@ import FavoritesPage from "./Pages/FavoritesPage";
 
 import RecipeCategoryDetail from "./Components/RecipeCategoryDetail";
 import RecipesCategory from "./Pages/RecipesCategory";
+import ContactUs from "./Pages/ContactUs";
 
 function App() {
   return (
@@ -22,7 +23,11 @@ function App() {
             <Route path="recipes/:id" element={<RecipeDetail />} />
           </Route>
           <Route path="/recipes" element={<RecipesCategory />} />
-          <Route path="recipes/category/:id" element={<RecipeCategoryDetail />} />
+          <Route
+            path="recipes/category/:id"
+            element={<RecipeCategoryDetail />}
+          />
+          <Route path="/contact-us" element={<ContactUs/>} />
         </Routes>
       </FavoritesProvider>
     </ThemeProvider>

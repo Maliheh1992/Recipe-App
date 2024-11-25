@@ -36,6 +36,7 @@ function RecipesCategory() {
   const [currentPage, setCurrentPage] = useState(1);
   const [nextUrl, setNextUrl] = useState(null); // ذخیره لینک صفحه بعدی
   const [totalResults, setTotalResults] = useState(0);
+  const [selectedFiltersCategory, setSelectedFiltersCategory] = useState([]);
 
   const { favorites } = useFavorites();
 
@@ -172,6 +173,16 @@ function RecipesCategory() {
   ]);
 
   const handleSubCategoryClick = (value, title) => {
+    const filterKey = `${title}-${value}`;
+
+    if (selectedFiltersCategory.includes(filterKey)) {
+      setSelectedFiltersCategory((prevFilters) =>
+        prevFilters.filter((filter) => filter !== filterKey)
+      );
+    } else {
+      setSelectedFiltersCategory((prevFilters) => [...prevFilters, filterKey]);
+    }
+
     if (title === "Cuisine") {
       setSelectedCuisineCategory(value);
       console.log("Selected Cuisine Category:", value);
@@ -230,11 +241,12 @@ function RecipesCategory() {
       console.log("Unknown category:", category);
     }
   };
+  
 
   if (loading) {
     <div className="w-full h-[100vh] flex items-center justify-center">
-    <Loading />
-  </div>
+      <Loading />
+    </div>;
   }
 
   return (
@@ -243,6 +255,7 @@ function RecipesCategory() {
         data={data}
         onSubCategoryClick={handleSubCategoryClick}
         deleteFilter={handleClearFilter}
+        selectedFiltersCategory={selectedFiltersCategory}
       />
       <SidebarInset>
         <Navbar />
